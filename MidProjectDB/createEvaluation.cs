@@ -27,7 +27,7 @@ namespace MidProjectDB
                 bool isValue1Numeric = int.TryParse(weightage.Text, out value1);
                 int value2;
                 bool isValue2Numeric = int.TryParse(totalM.Text, out value2);
-                if (comboBox1.Text == null || totalM.Text == "" || weightage.Text == "")
+                if (evaluationName == null || totalM.Text == "" || weightage.Text == "")
                 {
                     MessageBox.Show("Fill All the Boxes");
                 }
@@ -35,33 +35,47 @@ namespace MidProjectDB
                 {
                     if (checkEvaluation())
                     {
-
-                        if (value2 < 100)
+                        int sum = checkWeightage();
+                        if (sum == 100)
                         {
-
-                            if (value1 < 100)
-                            {
-                                var con = Configuration.getInstance().getConnection();
-                                SqlCommand cmd = new SqlCommand("Insert into Evaluation values (@Name,@TotalM,@Weightage)", con);
-                                cmd.Parameters.AddWithValue("@Name", comboBox1.Text);
-                                cmd.Parameters.AddWithValue("@TotalM", totalM.Text);
-                                cmd.Parameters.AddWithValue("@Weightage", weightage.Text);
-                                cmd.ExecuteNonQuery();
-                                MessageBox.Show("Data has been added");
-                                showGridData();
-                                comboBox1.Text = "";
-                                totalM.Text = "";
-                                weightage.Text = "";
-                            }
-                            else
-                            {
-                                MessageBox.Show("Weightage should be less than 100");
-                            }
+                             MessageBox.Show("Weightage is 100");
                         }
                         else
                         {
-                            MessageBox.Show("Marks should be less than 100");
+                            if(int.Parse(weightage.Text) > 100 - sum)
+                            {
+                                int remaining = 100 - sum;
+                                MessageBox.Show("Remaining Weightage is " + remaining);
+                            }
+                            else
+                            {
+                                if (value2 < 100)
+                                {
+
+                                    if (value1 < 100)
+                                    {
+                                        var con = Configuration.getInstance().getConnection();
+                                        SqlCommand cmd = new SqlCommand("Insert into Evaluation values (@Name,@TotalM,@Weightage)", con);
+                                        cmd.Parameters.AddWithValue("@Name", evaluationName.Text);
+                                        cmd.Parameters.AddWithValue("@TotalM", int.Parse(totalM.Text));
+                                        cmd.Parameters.AddWithValue("@Weightage", int.Parse(weightage.Text));
+                                        cmd.ExecuteNonQuery();
+                                        MessageBox.Show("Data has been added");
+                                        showGridData();
+                                        clearbox();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Weightage should be less than 100");
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Marks should be less than 100");
+                                }
+                            }
                         }
+          
                     }
                     else
                     {
@@ -82,7 +96,7 @@ namespace MidProjectDB
         void showGridData()
         {
             var con = Configuration.getInstance().getConnection();
-            SqlCommand cmd = new SqlCommand("Select * From Evaluation", con);
+            SqlCommand cmd = new SqlCommand("Select Name as [Evaluation Name], TotalMarks,TotalWeightage From Evaluation", con);
             cmd.ExecuteNonQuery();
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -94,7 +108,7 @@ namespace MidProjectDB
             bool flag = false;
             var con = Configuration.getInstance().getConnection();
             SqlCommand cmd = new SqlCommand("SELECT Name FROM Evaluation Where Name = @Name", con);
-            cmd.Parameters.AddWithValue("@Name", comboBox1.Text);
+            cmd.Parameters.AddWithValue("@Name", evaluationName.Text);
             object result = cmd.ExecuteScalar();
             if (result == null)
             {
@@ -102,7 +116,26 @@ namespace MidProjectDB
             }
             return flag;
 
-
         }
+        int checkWeightage()
+        {
+            int sum = 0;
+            var con = Configuration.getInstance().getConnection();
+            SqlCommand cmd = new SqlCommand("Select Sum(TotalWeightage) from Evaluation", con);
+            object result = cmd.ExecuteScalar();
+            if (result != null && result != DBNull.Value)
+            {
+                sum = Convert.ToInt32(result);
+            }
+            return sum;
+        }
+        void clearbox()
+        {
+            evaluationName.Text = "";
+            totalM.Text = "";
+            weightage.Text = "";
+        }
+        
     }
 }
+

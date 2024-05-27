@@ -22,9 +22,7 @@ namespace MidProjectDB
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var con = Configuration.getInstance().getConnection();
-            SqlCommand cmd = new SqlCommand("SELECT Id FROM Person WHERE  Firstname = @FirstName AND LastName = @LastName AND Contact = @Contact AND Email = @Email AND Gender = @Gender", con);
-            
+           
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -49,7 +47,7 @@ namespace MidProjectDB
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             da.Fill(dt);
-            PDFGenerator.CreatePDF(dt, "Report2", "Marks sheet of projects that shows the marks in each evaluation against each student and project and any \r\nother reports that you can help the committee to streamline the process.");
+            PDFGenerator.CreatePDF(dt, "Report2", "Marks sheet of projects that shows the marks in each evaluation against each student and project and any other reports that you can help the committee to streamline the process.");
         }
 
         private void report3_Click(object sender, EventArgs e)
@@ -75,7 +73,7 @@ namespace MidProjectDB
         private void button2_Click(object sender, EventArgs e)
         {
             var con = Configuration.getInstance().getConnection();
-            SqlCommand cmd = new SqlCommand("Select ProjectId,AdvisorRole,FirstName,LastName,Designation,Salary\r\nFrom Person Join (Select *\r\nFrom ProjectAdvisor Join Advisor on ProjectAdvisor.AdvisorId = Advisor.Id) as T1 on Person.Id = T1.AdvisorId", con);
+            SqlCommand cmd = new SqlCommand("Select ProjectId,AdvisorRole,FirstName,LastName,Designation,Salary From Person Join (Select * From ProjectAdvisor Join Advisor on ProjectAdvisor.AdvisorId = Advisor.Id) as T1 on Person.Id = T1.AdvisorId", con);
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             da.Fill(dt);

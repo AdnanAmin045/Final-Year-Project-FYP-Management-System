@@ -104,7 +104,7 @@ namespace MidProjectDB
         void ShowData()
         {
             var con = Configuration.getInstance().getConnection();
-            SqlCommand cmd = new SqlCommand("Select GroupId,ProjectId,AssignmentDate,Created_On FROM [Group] JOIN GroupProject ON [Group].Id = GroupProject.GroupId ", con);
+            SqlCommand cmd = new SqlCommand("Select GroupId,Project.Title as [Project Title],Format(AssignmentDate,'dd-MM-yyyy') as [Assignment Date],Format(Created_On,'dd-MM-yyyy') as [Created Date] FROM [Group] JOIN GroupProject ON [Group].Id = GroupProject.GroupId join Project on GroupProject.ProjectId = Project.Id", con);
             cmd.ExecuteNonQuery();
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -139,8 +139,8 @@ namespace MidProjectDB
             if (dataGridView1.SelectedRows.Count > 0)
             { 
                 int groupId = int.Parse(dataGridView1.SelectedRows[0].Cells[0].Value?.ToString());
-                int projectId = int.Parse(dataGridView1.SelectedRows[0].Cells[1].Value?.ToString());
-                groupStudent panel1 = new groupStudent(groupId,projectId);
+                string project = dataGridView1.SelectedRows[0].Cells[1].Value?.ToString();
+                groupStudent panel1 = new groupStudent(groupId,project);
                 panel1.Show();
             }
         }

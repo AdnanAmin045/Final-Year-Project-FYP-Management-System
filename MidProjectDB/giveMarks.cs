@@ -26,11 +26,13 @@ namespace MidProjectDB
             label3.Text = groupId.ToString(); 
             showDataIntoGrid();
             getEvaluationName();
+            showEvaluation();
         }
         void showDataIntoGrid()
         {
             var con = Configuration.getInstance().getConnection();
-            SqlCommand cmd = new SqlCommand("Select * from GroupEvaluation", con);
+            SqlCommand cmd = new SqlCommand("Select Evaluation.Name as [Evaluation Name], GroupEvaluation.ObtainedMarks, Format(GroupEvaluation.EvaluationDate,'dd-MM-yyyy') as [Evaluation Date] from GroupEvaluation join Evaluation on GroupEvaluation.EvaluationId = Evaluation.Id Where GroupId = @Id", con);
+            cmd.Parameters.AddWithValue("@Id", groupId);
             cmd.ExecuteNonQuery();
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -48,7 +50,7 @@ namespace MidProjectDB
                 {
                     if (!checkComboValue())
                     {
-                        if (getTotalM() > obtainMarks)
+                        if (getTotalM() >= obtainMarks)
                         {
                             var con1 = Configuration.getInstance().getConnection();
                             SqlCommand cmd2 = new SqlCommand("Insert into GroupEvaluation values (@GroupId,@EvaluationId, @ObtainM,@Date)", con1);
@@ -58,11 +60,13 @@ namespace MidProjectDB
                             cmd2.Parameters.AddWithValue("@Date", DateTime.Now);
                             cmd2.ExecuteNonQuery();
                             MessageBox.Show("Data has been added");
+                            clearox();
+                            showEvaluation();
                             showDataIntoGrid();
                         }
                         else
                         {
-                            MessageBox.Show("Obtain Marks should be less than Total Marks");
+                            MessageBox.Show("Total Marks of " + comboBox1.Text + " is " + getTotalM());
                         }
                     }
                     else
@@ -145,6 +149,24 @@ namespace MidProjectDB
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+        void showEvaluation()
+        {
+            var con = Configuration.getInstance().getConnection();
+            SqlCommand cmd = new SqlCommand("Select Name From GroupEvaluation join Evaluation on GroupEvaluation.EvaluationId = Evaluation.Id where GroupId = @Id", con);
+            cmd.Parameters.AddWithValue("@Id", groupId);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while(reader.Read())
+            {
+               comboBox1.Items.Remove(reader.GetString(0));
+            }
+            reader.Close();
+
+        }
+        void clearox()
+        {
+            comboBox1.Text = "";
+            obtainM.Text = "";
         }
     }
 }

@@ -157,7 +157,7 @@ namespace MidProjectDB
         void showData()
         {
             var con = Configuration.getInstance().getConnection();
-            SqlCommand cmd = new SqlCommand("Select * from ProjectAdvisor", con);
+            SqlCommand cmd = new SqlCommand("Select Person.FirstName+LastName as [Advisor Name], Project.Title as [Project Title], Lookup.Value [Advisor Role],Format(ProjectAdvisor.AssignmentDate,'dd-MM-yyyy') as  [Assignment Date] From ProjectAdvisor Join Project on ProjectAdvisor.ProjectId = Project.Id Join Lookup on ProjectAdvisor.AdvisorRole = Lookup.Id join Person on ProjectAdvisor.AdvisorId = Person.Id", con);
             cmd.ExecuteNonQuery();
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(cmd);

@@ -17,12 +17,12 @@ namespace MidProjectDB
     {
         advisor advisor = new advisor();
         int group;
-        int project;
-        public groupStudent(int groupId, int projectId)
+        string project;
+        public groupStudent(int groupId, string project)
         {
             InitializeComponent();
             this.group = groupId;
-            this.project = projectId;
+            this.project = project;
         }
 
         private void groupStudent_Load(object sender, EventArgs e)
@@ -30,7 +30,7 @@ namespace MidProjectDB
             showDataIntoCombo();
             loadDataIntoGrid();
             label3.Text = "Group Id: " + group;
-            label4.Text = getProjectName();
+            label4.Text = project;
         }
         void showDataIntoCombo()
         {
@@ -119,7 +119,7 @@ namespace MidProjectDB
         void loadDataIntoGrid()
         {
             var con = Configuration.getInstance().getConnection();
-            SqlCommand cmd = new SqlCommand("Select * from GroupStudent Where GroupId = @Id", con);
+            SqlCommand cmd = new SqlCommand("Select Student.RegistrationNo,Status,Format(AssignmentDate,'dd-MM-yyyy') as [Assingment Date] from GroupStudent join Student on GroupStudent.StudentId = Student.Id Where GroupId = @Id", con);
             cmd.Parameters.AddWithValue("@Id", group);
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();

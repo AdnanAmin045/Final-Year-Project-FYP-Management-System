@@ -5,12 +5,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
@@ -18,6 +20,7 @@ namespace MidProjectDB
 {
     public partial class stdCRUD : UserControl
     {
+        private const string V = " ";
         string regNo;
         string firstName;
         string lastName;
@@ -51,25 +54,22 @@ namespace MidProjectDB
             try
             {
 
-            
                 if (regNotxt.Text == "" || Fnametxt.Text == "" || Lnametxt.Text == "" || contacttxt.Text == "" || emailtxt.Text == "")
                 {
                     MessageBox.Show("Fill AlL the boxes");
                 }
-                else if(!checkDuplication())
+                else if (!checkDuplication())
                 {
-                    if((maleCheck.Checked || femaleCheck.Checked))
+                    if ((maleCheck.Checked || femaleCheck.Checked))
                     {
-
-               
-                        if (contacttxt.Text.Length == 11 && IsNumeric(contacttxt.Text))
+                        if (checkContactNo(contacttxt.Text) && IsNumeric(contacttxt.Text))
                         {
-                            if (IsValidEmail(emailtxt.Text))
+                            if (!checkRegNo())
                             {
 
-                                if(!checkRegNo())
+                                if (IsValidRegistrationNumber(regNotxt.Text))
                                 {
-                                    if(IsValidRegistrationNumber(regNotxt.Text))
+                                    if (IsValidEmail(emailtxt.Text))
                                     {
                                         var con = Configuration.getInstance().getConnection();
                                         SqlCommand cmd = new SqlCommand("Insert into Person values (@FirstName, @LastName, @Contact, @Email, @DateOfBirth, @Gender)", con);
@@ -77,7 +77,7 @@ namespace MidProjectDB
                                         cmd.Parameters.AddWithValue("@LastName", Lnametxt.Text);
                                         cmd.Parameters.AddWithValue("@Contact", contacttxt.Text);
                                         cmd.Parameters.AddWithValue("@Email", emailtxt.Text);
-                                        cmd.Parameters.AddWithValue("@DateOfBirth", dateTimePicker1.Value);
+                                        cmd.Parameters.AddWithValue("@DateOfBirth", Convert.ToDateTime(dobPicker.Text));
                                         if (maleCheck.Checked)
                                         {
                                             cmd.Parameters.AddWithValue("@Gender", 1);
@@ -101,19 +101,19 @@ namespace MidProjectDB
                                     }
                                     else
                                     {
-                                        MessageBox.Show("Wrong Format of Registration No");
+                                        MessageBox.Show("Enter the valid email");
                                     }
 
 
                                 }
                                 else
                                 {
-                                    MessageBox.Show("RegistrationNo Already Exist");
+                                    MessageBox.Show("Wrong Format of Registration No");
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("Enter the valid email");
+                                MessageBox.Show(" RegistrationNo Already Exist");
                             }
                         }
                         else
@@ -183,9 +183,19 @@ namespace MidProjectDB
                 Lnametxt.Text = dataGridView1.SelectedRows[0].Cells[2].Value?.ToString();
                 contacttxt.Text = dataGridView1.SelectedRows[0].Cells[3].Value?.ToString();
                 emailtxt.Text = dataGridView1.SelectedRows[0].Cells[4].Value?.ToString();
-                dateTimePicker1.Text = dataGridView1.SelectedRows[0].Cells[5].Value.ToString();
-                int value = int.Parse(dataGridView1.SelectedRows[0].Cells[6].Value.ToString());
-                if (value == 1)
+                string dateString = dataGridView1.SelectedRows[0].Cells[5].Value.ToString();
+                DateTime dateValue;
+                if (DateTime.TryParseExact(dateString, "dd-MMM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                {
+                    dobPicker.Value = dateValue;
+                    Console.WriteLine(dateValue);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid date format!");
+                }
+                string value = dataGridView1.SelectedRows[0].Cells[6].Value.ToString();
+                if (value == "Male")
                 {
                     maleCheck.Checked = true;
                 }
@@ -198,7 +208,7 @@ namespace MidProjectDB
                 lastName = Lnametxt.Text;
                 contact = contacttxt.Text;
                 email = emailtxt.Text;
-                date = DateTime.Parse(dateTimePicker1.Text);
+                date = DateTime.Parse(dobPicker.Text);
                 if(maleCheck.Checked)
                 {
                     gender = 1;
@@ -221,62 +231,67 @@ namespace MidProjectDB
                 {
                     MessageBox.Show("Fill AlL the boxes");
                 }
-                else if (regNo == regNotxt.Text.ToString())
-                { 
+                else if (!(regNo == null || firstName == null || lastName == null))
+                {
+                    if (regNo == regNotxt.Text.ToString())
+                    { 
 
-                     if ((maleCheck.Checked || femaleCheck.Checked))
-                     {
+                         if ((maleCheck.Checked || femaleCheck.Checked))
+                         {
 
-                        if (contacttxt.Text.Length == 11 && IsNumeric(contacttxt.Text))
-                        {
-                            if(IsValidEmail(emailtxt.Text))
+                            if (checkContactNo(contacttxt.Text) && IsNumeric(contacttxt.Text))
                             {
-                                var con = Configuration.getInstance().getConnection();
-                                int id = getPersonId();
-                                date = DateTime.Parse(dateTimePicker1.Text);
-                                SqlCommand cmd = new SqlCommand("UPDATE Person SET FirstName = @FirstName, LastName = @LastName, Contact = @Contact, Email = @Email, DateOfBirth = @DateOfBirth, Gender = @Gender WHERE Id = @Id", con);
-                                cmd.Parameters.AddWithValue("@FirstName", (Fnametxt.Text));
-                                cmd.Parameters.AddWithValue("@LastName", Lnametxt.Text);
-
-                                cmd.Parameters.AddWithValue("@Contact", contacttxt.Text);
-                                cmd.Parameters.AddWithValue("@Email", emailtxt.Text);
-                                cmd.Parameters.AddWithValue("@Id", id);
-                                cmd.Parameters.AddWithValue("@DateOfBirth",dateTimePicker1.Value);
-                                if(maleCheck.Checked)
+                                if(IsValidEmail(emailtxt.Text))
                                 {
-                                    cmd.Parameters.AddWithValue("@Gender", 1);
+                                    var con = Configuration.getInstance().getConnection();
+                                    int id = getPersonId();
+                                    SqlCommand cmd = new SqlCommand("UPDATE Person SET FirstName = @FirstName, LastName = @LastName, Contact = @Contact, Email = @Email, DateOfBirth = @DateOfBirth, Gender = @Gender WHERE Id = @Id", con);
+                                    cmd.Parameters.AddWithValue("@FirstName", (Fnametxt.Text));
+                                    cmd.Parameters.AddWithValue("@LastName", Lnametxt.Text);
+                                    cmd.Parameters.AddWithValue("@Contact", contacttxt.Text);
+                                    cmd.Parameters.AddWithValue("@Email", emailtxt.Text);
+                                    cmd.Parameters.AddWithValue("@Id", id);
+                                    cmd.Parameters.AddWithValue("@DateOfBirth",Convert.ToDateTime(dobPicker.Text));
+                                    if(maleCheck.Checked)
+                                    {
+                                        cmd.Parameters.AddWithValue("@Gender", 1);
+                                    }
+                                    else
+                                    {
+                                        cmd.Parameters.AddWithValue("@Gender", 2);
+                                    }
+                                    cmd.ExecuteNonQuery();
+                                    var con2 = Configuration.getInstance().getConnection();
+                                    SqlCommand cmd2 = new SqlCommand("UPDATE Student SET Id = @Id, RegistrationNo = @RegistrationNo", con2);
+                                    cmd2.Parameters.AddWithValue("@Id", id);
+                                    cmd2.Parameters.AddWithValue("@RegistrationNo", regNotxt.Text);
+                                    MessageBox.Show("Updated Successfully");
+                                    clearBoxes();            
+                                    loadData();
                                 }
                                 else
                                 {
-                                    cmd.Parameters.AddWithValue("@Gender", 2);
+                                    MessageBox.Show("Enter the valid email");
                                 }
-                                cmd.ExecuteNonQuery();
-                                var con2 = Configuration.getInstance().getConnection();
-                                SqlCommand cmd2 = new SqlCommand("UPDATE Student SET Id = @Id, RegistrationNo = @RegistrationNo", con2);
-                                cmd2.Parameters.AddWithValue("@Id", id);
-                                cmd2.Parameters.AddWithValue("@RegistrationNo", regNotxt.Text);
-                                clearBoxes();            
-                                MessageBox.Show("Updated Successfully");
-                                loadData();
                             }
                             else
                             {
-                                MessageBox.Show("Enter the valid email");
+                                MessageBox.Show("Enter the valid contact number");
                             }
-                        }
+                         }
                         else
                         {
-                            MessageBox.Show("Enter the valid contact number");
+                            MessageBox.Show("Select the Gender");
                         }
-                     }
+                    }
                     else
                     {
-                        MessageBox.Show("Select the Gender");
+                        MessageBox.Show("You cannot change the registration number ");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("You cannot change the registration number");
+                    MessageBox.Show("Select the Existing Data for Update");
                 }
             }
             catch (Exception ex)
@@ -307,7 +322,7 @@ namespace MidProjectDB
             cmd.Parameters.AddWithValue("@LastName", Lnametxt.Text);
             cmd.Parameters.AddWithValue("@Contact", contacttxt.Text);
             cmd.Parameters.AddWithValue("@Email", emailtxt.Text);
-            cmd.Parameters.AddWithValue("@DateOfBirth", dateTimePicker1.Value);
+            cmd.Parameters.AddWithValue("@DateOfBirth", dobPicker.Value.Date);
             if (Convert.ToInt32(cmd.ExecuteScalar()) > 0)
             {
                 flag = true;
@@ -317,7 +332,7 @@ namespace MidProjectDB
         void loadData() 
         {
             var con = Configuration.getInstance().getConnection();
-            SqlCommand cmd = new SqlCommand("Select RegistrationNo,FirstName,LastName,Contact, Email,DateOfBirth,Gender  from Student JOIN Person ON Student.Id = Person.Id", con);
+            SqlCommand cmd = new SqlCommand("Select RegistrationNo ,FirstName,LastName,Contact, Email,FORMAT(DateOfBirth, 'dd-MMM-yyyy') AS DateOfBirth, CASE WHEN Gender = 1 THEN 'Male' ELSE 'Female' END AS Gender from Student JOIN Person ON Student.Id = Person.Id", con);
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -332,11 +347,11 @@ namespace MidProjectDB
             emailtxt.Text = "";
             maleCheck.Checked = false;
             femaleCheck.Checked = false;
-            dateTimePicker1.Value = DateTime.Now;
+            dobPicker.Text = " ";
         }
         bool IsValidEmail(string email)
         {
-            string pattern = @"^[a-zA-Z0-9._%+-]+@gmail.com$";
+            string pattern = @"^[a-zA-Z0-9._%+-]+@(?:gmail\.com|student\.uet\.edu\.pk)$";
             Regex regex = new Regex(pattern);
             return regex.IsMatch(email);
         }
@@ -357,9 +372,22 @@ namespace MidProjectDB
         }
         bool IsValidRegistrationNumber(string regNo)
         {
+            string trimmedText = regNo.Replace(" ", "");
             string pattern = @"^\d{4}-[A-Z]{2}-\d{2,3}$";
             Regex regex = new Regex(pattern);
-            return regex.IsMatch(regNo);
+            return regex.IsMatch(trimmedText);
+        }
+        bool checkContactNo(string text)
+        {
+            string trimmedText = text.Replace(" ", "");
+            if (trimmedText.Length == 11)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         bool IsNumeric(string input)
         {
@@ -373,6 +401,33 @@ namespace MidProjectDB
             return true;
         }
 
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void stdCRUD_KeyDown(object sender, KeyEventArgs e)
+        {
+           
+        }
+
+        private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dobPicker_ValueChanged(object sender, EventArgs e)
+        {
+            dobPicker.CustomFormat = "dd-MMM-yyyy";
+        }
+
+        private void dobPicker_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
+            {
+                dobPicker.CustomFormat = " ";
+            }
+        }
     }
 }
 

@@ -32,7 +32,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.clear = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.femaleCheck = new System.Windows.Forms.CheckBox();
             this.maleCheck = new System.Windows.Forms.CheckBox();
             this.emailtxt = new System.Windows.Forms.TextBox();
@@ -53,12 +52,13 @@
             this.cachedCrystalReport11 = new MidProjectDB.CachedCrystalReport1();
             this.desginationCB = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.DodgerBlue;
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(83)))), ((int)(((byte)(157)))));
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button2.Font = new System.Drawing.Font("Segoe UI Emoji", 13.8F, System.Drawing.FontStyle.Bold);
             this.button2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
@@ -72,7 +72,7 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.DodgerBlue;
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(83)))), ((int)(((byte)(157)))));
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Segoe UI Emoji", 13.8F, System.Drawing.FontStyle.Bold);
             this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
@@ -110,14 +110,6 @@
             this.button5.TabIndex = 47;
             this.button5.Text = "Manage Students";
             this.button5.UseVisualStyleBackColor = false;
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F);
-            this.dateTimePicker1.Location = new System.Drawing.Point(751, 173);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(222, 27);
-            this.dateTimePicker1.TabIndex = 46;
             // 
             // femaleCheck
             // 
@@ -259,7 +251,7 @@
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(1071, 230);
+            this.dataGridView1.Size = new System.Drawing.Size(1090, 230);
             this.dataGridView1.TabIndex = 31;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
@@ -285,13 +277,13 @@
             // 
             // button4
             // 
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(145)))), ((int)(((byte)(152)))));
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold);
             this.button4.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button4.Location = new System.Drawing.Point(0, 0);
+            this.button4.Location = new System.Drawing.Point(-4, 0);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(1079, 67);
+            this.button4.Size = new System.Drawing.Size(1102, 67);
             this.button4.TabIndex = 54;
             this.button4.Text = "Manage Advisor";
             this.button4.UseVisualStyleBackColor = false;
@@ -319,7 +311,7 @@
             "Industry Professor"});
             this.desginationCB.Location = new System.Drawing.Point(751, 245);
             this.desginationCB.Name = "desginationCB";
-            this.desginationCB.Size = new System.Drawing.Size(215, 35);
+            this.desginationCB.Size = new System.Drawing.Size(222, 35);
             this.desginationCB.TabIndex = 55;
             this.desginationCB.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.desginationCB.SelectedValueChanged += new System.EventHandler(this.desginationCB_SelectedValueChanged);
@@ -335,11 +327,26 @@
             this.label6.TabIndex = 34;
             this.label6.Text = "Record";
             // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CustomFormat = " ";
+            this.dateTimePicker1.Font = new System.Drawing.Font("Segoe UI Emoji", 12F);
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(751, 169);
+            this.dateTimePicker1.MaxDate = new System.DateTime(2024, 4, 19, 0, 0, 0, 0);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(222, 34);
+            this.dateTimePicker1.TabIndex = 56;
+            this.dateTimePicker1.Value = new System.DateTime(2020, 2, 4, 0, 0, 0, 0);
+            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            this.dateTimePicker1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dateTimePicker1_KeyDown);
+            // 
             // advisor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightCyan;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.desginationCB);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.salarytxt);
@@ -349,7 +356,6 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.clear);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.femaleCheck);
             this.Controls.Add(this.maleCheck);
             this.Controls.Add(this.emailtxt);
@@ -365,7 +371,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridView1);
             this.Name = "advisor";
-            this.Size = new System.Drawing.Size(1079, 746);
+            this.Size = new System.Drawing.Size(1098, 746);
             this.Load += new System.EventHandler(this.advisor_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
@@ -378,7 +384,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button clear;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.CheckBox femaleCheck;
         private System.Windows.Forms.CheckBox maleCheck;
         private System.Windows.Forms.TextBox emailtxt;
@@ -399,5 +404,6 @@
         private CachedCrystalReport1 cachedCrystalReport11;
         private System.Windows.Forms.ComboBox desginationCB;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
 }

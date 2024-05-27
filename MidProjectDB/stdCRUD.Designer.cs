@@ -43,12 +43,12 @@
             this.Lnametxt = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.emailtxt = new System.Windows.Forms.TextBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.button5 = new System.Windows.Forms.Button();
             this.clear = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.dobPicker = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -171,7 +171,7 @@
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(1051, 307);
+            this.dataGridView1.Size = new System.Drawing.Size(1074, 307);
             this.dataGridView1.TabIndex = 9;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
@@ -218,23 +218,15 @@
             this.emailtxt.Size = new System.Drawing.Size(215, 27);
             this.emailtxt.TabIndex = 15;
             // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F);
-            this.dateTimePicker1.Location = new System.Drawing.Point(618, 164);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(215, 27);
-            this.dateTimePicker1.TabIndex = 25;
-            // 
             // button5
             // 
-            this.button5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(145)))), ((int)(((byte)(152)))));
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button5.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button5.Location = new System.Drawing.Point(-14, 0);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(1079, 63);
+            this.button5.Size = new System.Drawing.Size(1104, 63);
             this.button5.TabIndex = 26;
             this.button5.Text = "Manage Student";
             this.button5.UseVisualStyleBackColor = false;
@@ -246,7 +238,7 @@
             this.clear.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.clear.Font = new System.Drawing.Font("Segoe UI Emoji", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clear.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.clear.Location = new System.Drawing.Point(868, 71);
+            this.clear.Location = new System.Drawing.Point(891, 71);
             this.clear.Name = "clear";
             this.clear.Size = new System.Drawing.Size(139, 42);
             this.clear.TabIndex = 27;
@@ -256,7 +248,7 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.DodgerBlue;
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(83)))), ((int)(((byte)(157)))));
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Segoe UI Emoji", 13.8F, System.Drawing.FontStyle.Bold);
             this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
@@ -270,11 +262,11 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.DodgerBlue;
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(83)))), ((int)(((byte)(157)))));
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button2.Font = new System.Drawing.Font("Segoe UI Emoji", 13.8F, System.Drawing.FontStyle.Bold);
             this.button2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button2.Location = new System.Drawing.Point(464, 307);
+            this.button2.Location = new System.Drawing.Point(477, 308);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(139, 42);
             this.button2.TabIndex = 29;
@@ -293,16 +285,30 @@
             this.label6.TabIndex = 11;
             this.label6.Text = "Record";
             // 
+            // dobPicker
+            // 
+            this.dobPicker.CustomFormat = " ";
+            this.dobPicker.Font = new System.Drawing.Font("Segoe UI Emoji", 12F);
+            this.dobPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dobPicker.Location = new System.Drawing.Point(618, 156);
+            this.dobPicker.MaxDate = new System.DateTime(2024, 4, 19, 0, 0, 0, 0);
+            this.dobPicker.Name = "dobPicker";
+            this.dobPicker.Size = new System.Drawing.Size(215, 34);
+            this.dobPicker.TabIndex = 30;
+            this.dobPicker.Value = new System.DateTime(2024, 4, 18, 0, 0, 0, 0);
+            this.dobPicker.ValueChanged += new System.EventHandler(this.dobPicker_ValueChanged);
+            this.dobPicker.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dobPicker_KeyDown);
+            // 
             // stdCRUD
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightCyan;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Controls.Add(this.dobPicker);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.clear);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.femaleCheck);
             this.Controls.Add(this.maleCheck);
             this.Controls.Add(this.emailtxt);
@@ -320,8 +326,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "stdCRUD";
-            this.Size = new System.Drawing.Size(1061, 758);
+            this.Size = new System.Drawing.Size(1084, 758);
             this.Load += new System.EventHandler(this.stdCRUD_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.stdCRUD_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -344,11 +351,11 @@
         private System.Windows.Forms.TextBox Lnametxt;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox emailtxt;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button clear;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DateTimePicker dobPicker;
     }
 }
